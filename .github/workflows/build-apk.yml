@@ -15,11 +15,10 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Set up Java (JDK 17)
-        uses: actions/setup-java@v4
+        uses: actions/setup-java@v5
         with:
           distribution: 'temurin'
           java-version: '17'
-          cache: 'gradle'
 
       - name: Set up Flutter
         uses: subosito/flutter-action@v2
@@ -30,10 +29,10 @@ jobs:
 
       - name: Generate Official Android Scaffold
         run: |
-          # 1. 由官方 Flutter CLI 生成最纯净标准的 Android 原生工程底座（含 Gradle Wrapper 二进制）
+          # 1. 官方 Flutter CLI 全新生成标准 Android 原生工程与 Gradle Wrapper
           flutter create . --platforms=android --org=com.example --project-name=web_wrapper_app
           
-          # 2. 注入网络权限与 HTTP 明文支持
+          # 2. 注入网络权限与 HTTP 明文支持 (usesCleartextTraffic)
           python3 -c '
           manifest_path = "android/app/src/main/AndroidManifest.xml"
           with open(manifest_path, "r", encoding="utf-8") as f:
