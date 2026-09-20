@@ -72,7 +72,7 @@ class _WebViewScreenState extends State<WebViewScreen> {
   Widget build(BuildContext context) {
     return PopScope(
       canPop: false,
-      onPopInvokedWithResult: (bool didPop, dynamic result) async {
+      onPopInvokedWithResult: (bool didPop, Object? result) async {
         if (didPop) return;
         // 如果网页内部有前进后退历史，优先后退
         if (await _controller.canGoBack()) {

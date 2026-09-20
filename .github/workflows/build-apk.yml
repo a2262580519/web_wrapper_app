@@ -28,6 +28,28 @@ jobs:
           channel: 'stable'
           cache: true
 
+      - name: Ensure Android Native Scaffold
+        run: |
+          # 自动补全 Flutter 官方标准 Android 构建脚手架与 Gradle Wrapper
+          flutter create . --platforms=android --org=com.example --project-name=web_wrapper_app
+          
+          # 在 AndroidManifest.xml 中注入网络权限与明文 HTTP (usesCleartextTraffic)
+          python3 -c '
+          manifest_path = "android/app/src/main/AndroidManifest.xml"
+          with open(manifest_path, "r", encoding="utf-8") as f:
+              content = f.read()
+          
+          if "android.permission.INTERNET" not in content:
+              content = content.replace("<application", "<uses-permission android:name=\"android.permission.INTERNET\"/>\n    <application")
+          
+          if "usesCleartextTraffic" not in content:
+              content = content.replace("<application", "<application\n        android:usesCleartextTraffic=\"true\"")
+          
+          with open(manifest_path, "w", encoding="utf-8") as f:
+              f.write(content)
+          print("AndroidManifest.xml patched successfully!")
+          '
+
       - name: Install dependencies
         run: flutter pub get
 
