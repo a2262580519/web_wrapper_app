@@ -1,0 +1,14 @@
+请使用 sandbox-mcp 或终端工具，在当前目录下帮我生成一个最简化的 Flutter 网页套壳 App 项目。
+目标网址： [http://47.236.198.163:8081/]
+项目名称： web_wrapper_app
+技术要求：
+核心依赖： 在 pubspec.yaml 中引入官方的 webview_flutter: ^4.10.0。
+代码实现（lib/main.dart）：
+APP 启动后直接全屏展示 Webview，去掉默认的顶部 AppBar，最大化显示区域。
+启用 JavaScript 执行权限（JavaScriptMode.unrestricted）。
+物理返回键处理： 使用 PopScope 拦截安卓返回手势。如果网页内部有历史记录（canGoBack），按返回键只在网页内后退；只有退到首页后再按返回键，才退出 APP。
+安卓权限与网络配置（关键防坑）：
+修改 android/app/src/main/AndroidManifest.xml，添加 <uses-permission android:name="android.permission.INTERNET"/> 网络权限。
+在 <application> 标签中加入 android:usesCleartextTraffic="true"，确保即使我使用的是未配置 SSL 证书的纯 HTTP 网址也能正常加载。
+云端打包准备：
+在项目根目录生成 .github/workflows/build-apk.yml 文件，配置好 GitHub Actions 自动打包 Flutter Release APK 的流水线，方便我直接推送到 GitHub 一键生成安装包。请帮我一次性生成这些代码与配置文件，并简要告诉我后续推送到 GitHub 下载 APK 的 3 步命令。
